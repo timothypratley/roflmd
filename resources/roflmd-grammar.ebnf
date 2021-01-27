@@ -1,0 +1,31 @@
+MARKDOWN = ( ELEMENT | PLAIN_STRING )*
+
+(* recognized markdown bits *)
+
+ELEMENT = EMBED | PAGE |
+          BOLD | ITALIC | STRIKE_THROUGH | HIGHLIGHT | LATEX |
+          INLINE_CODE | CODE_BLOCK | BLOCK_REF | TAG | MULTI_TAG
+
+EMBED = '{{' MARKDOWN '}}'
+PAGE = '[[' MARKDOWN ']]'
+
+(* TODO: these elements cannot self contain *)
+
+BOLD = '**' MARKDOWN '**'
+ITALIC = '__' MARKDOWN '__'
+STRIKE_THROUGH = '--' MARKDOWN '--'
+HIGHLIGHT = '^^' MARKDOWN '^^'
+LATEX = '$$' MARKDOWN '$$'
+
+(* non-recursive elements *)
+
+INLINE_CODE = '`' PLAIN_STRING '`'
+CODE_BLOCK = '```' PLAIN_STRING '```'
+BLOCK_REF = '((' NON_WHITESPACE '))'
+TAG = '#' NON_WHITESPACE
+MULTI_TAG = '#[[' PLAIN_STRING ']]'
+
+(* primitives *)
+
+PLAIN_STRING = #".*"
+NON_WHITESPACE = #"\S*"
