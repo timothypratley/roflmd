@@ -1,4 +1,5 @@
-# RoFlMD (ROAM Flavored Markdown)
+# roflmd (Roam Flavored Markdown)
 
-A grammar for ROAM Flavored Markdown parsing
+A reference grammar for Roam Flavored Markdown
+(https://roamresearch.com/)
 
