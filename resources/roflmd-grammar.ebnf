@@ -1,15 +1,18 @@
-MARKDOWN = ( ELEMENT | PLAIN_STRING )*
+MARKDOWN = ( ELEMENT | TEXT )*
 
 (* recognized markdown bits *)
 
 ELEMENT = EMBED | PAGE |
           BOLD | ITALIC | STRIKE_THROUGH | HIGHLIGHT | LATEX |
+          LINK | IMAGE | ATTRIBUTE |
           INLINE_CODE | CODE_BLOCK | BLOCK_REF | TAG | MULTI_TAG
+
+(* recursive elements *)
 
 EMBED = '{{' MARKDOWN '}}'
 PAGE = '[[' MARKDOWN ']]'
 
-(* TODO: these elements cannot self contain *)
+(* non-nestable recursive elements *)
 
 BOLD = '**' MARKDOWN '**'
 ITALIC = '__' MARKDOWN '__'
@@ -19,13 +22,17 @@ LATEX = '$$' MARKDOWN '$$'
 
 (* non-recursive elements *)
 
-INLINE_CODE = '`' PLAIN_STRING '`'
-CODE_BLOCK = '```' PLAIN_STRING '```'
+LINK = '[' TEXT '](' TEXT ')'
+IMAGE = '![' TEXT '](' TEXT ')'
+ATTRIBUTE = NON_WHITESPACE '::' NON_WHITESPACE
+INLINE_CODE = '`' TEXT '`'
+CODE_BLOCK = '```' TEXT '```'
 BLOCK_REF = '((' NON_WHITESPACE '))'
 TAG = '#' NON_WHITESPACE
-MULTI_TAG = '#[[' PLAIN_STRING ']]'
+MULTI_TAG = '#[[' TEXT ']]'
 
 (* primitives *)
 
-PLAIN_STRING = #".*"
-NON_WHITESPACE = #"\S*"
+TEXT = #".*"
+NON_WHITESPACE = #"\\S*"
+OPTIONAL_WHITESPACE = #'\\s*'
